@@ -1,15 +1,36 @@
+"use client"
 import Image from "next/image";
 import Hero from "./_component/Hero";
 import SocialMediaPartners from "./_component/SocialMedia";
 import Stats from "./_component/Stats";
 import Services from "./_component/Services";
+import TestimonialsSection from "./_component/Testimonial";
+import FooterSection from "./_component/Footer";
+import { useEffect, useState } from 'react';
 
 export default function Home() {
+  const [scrolling, setScrolling] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setScrolling(true);
+      } else {
+        setScrolling(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
     <div className="font-sans antialiased text-gray-900">
       {/* Navbar */}
-      {/* Navbar */}
-      <nav className="bg-white shadow-lg">
+      <nav className={`bg-white shadow-lg ${scrolling ? 'fixed top-0 left-0 w-full z-50' : 'relative'} transition-all duration-300`}>
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
           {/* Logo */}
           <div className="flex items-center space-x-2">
@@ -182,43 +203,9 @@ export default function Home() {
       {/* Services Section */}
       <Services />
 
-      {/* Testimonials Section */}
-      <section id="testimonials" className="bg-gray-100 py-20">
-        <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold text-gray-800 mb-10">
-            Testimonials
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <p className="text-gray-600">
-                "Voxizo transformed our online presence."
-              </p>
-              <h3 className="mt-4 font-semibold">Jane Doe, CEO of Company A</h3>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <p className="text-gray-600">
-                "Exceptional service and results."
-              </p>
-              <h3 className="mt-4 font-semibold">
-                John Smith, Marketing Director of Company B
-              </h3>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <p className="text-gray-600">"Highly recommend Voxizo."</p>
-              <h3 className="mt-4 font-semibold">
-                Mary Johnson, Founder of Startup C
-              </h3>
-            </div>
-          </div>
-        </div>
-      </section>
+      <TestimonialsSection />
 
-      {/* Footer */}
-      <footer className="bg-gray-800 py-10">
-        <div className="container mx-auto text-center text-white">
-          <p>&copy; 2023 Voxizo. All rights reserved.</p>
-        </div>
-      </footer>
+      <FooterSection />
     </div>
   );
 }
